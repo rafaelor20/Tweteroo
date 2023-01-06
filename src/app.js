@@ -78,6 +78,12 @@ server.get("/tweets", (req, res) => {
 	}
 })
 
+server.get("/tweets/:username", (req, res) => {
+	const userName = req.params.username;
+	const userTweets = tweets.filter(tweet => tweet.username === userName);
+	res.send(userTweets);
+})
+
 server.listen(PORT, () => console.log(`Este servidor roda na porta: ${PORT}`));
 
 /*
