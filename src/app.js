@@ -1,27 +1,31 @@
 import express from "express"
 
-const user = {
-	"username": '', 
-	"avatar": "" 
-}
+const PORT = 5000;
 
-const tweet = {
+let tweet = {
     "username": "",
     "tweet": ""
 }
 
+let tweetsElem = {
+	"username": "",
+	"avatar": "",
+	"tweet": ""
+};
 
-const tweetsElem = {
-		"username": "",
-		"avatar": "",
-		"tweet": ""
-	};
-
+const users = [];
 const tweets = [];
 
 const server = express();
+server.use(express.json());
+
+server.post("/sign-up",(req, res) => {
+	const user = req.body;
+	users.push(user);
+	console.log(users);
+	res.send();
+})
 
 
 
-
-server.listen(5000);
+server.listen(PORT, () => console.log(`Este servidor roda na porta: ${PORT}`));
