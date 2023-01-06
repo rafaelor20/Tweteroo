@@ -12,7 +12,7 @@ server.post("/sign-up", (req, res) => {
 	const user = req.body;
 	if (validSignUp(user)) {
 		users.push(user);
-		res.send("OK");
+		res.sendStatus(200);
 	} else {
 		res.sendStatus(400);
 	}
@@ -31,7 +31,10 @@ function validSignUp(user) {
 
 server.post("/tweets", (req, res) => {
 	const tweet = req.body;
-	const user = userLogged(tweet)
+	let user;
+	if (validTweet(tweet)){
+		user = userLogged(tweet);
+	}
 	if (user !== null) {
 		tweets.push(
 			{
@@ -40,11 +43,21 @@ server.post("/tweets", (req, res) => {
 				tweet: tweet.tweet
 			}
 		);
-		res.send("OK");
+		res.sendStatus(200);
 	} else {
-		res.send("UNAUTHORIZED");
+		res.sendStatus(401);
 	}
 })
+
+function validTweet(tweet){
+	let ok = false;
+	if (typeof tweet.username === "string" && typeof tweet.tweet === "string"){
+		if (tweet.username.length > 0 && tweet.tweet.length > 0){
+			ok = true;
+		}
+	}
+	return ok;
+}
 
 function userLogged(tweet) {
 	const username = tweet.username;
