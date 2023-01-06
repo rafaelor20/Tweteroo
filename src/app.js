@@ -20,8 +20,8 @@ server.post("/sign-up", (req, res) => {
 
 function validSignUp(user) {
 	let ok = false;
-	if (typeof user.username === "string" && typeof user.avatar === "string"){
-		if (user.username.length > 0 && user.avatar.length > 0){
+	if (typeof user.username === "string" && typeof user.avatar === "string") {
+		if (user.username.length > 0 && user.avatar.length > 0) {
 			ok = true;
 		}
 	}
@@ -29,29 +29,41 @@ function validSignUp(user) {
 }
 
 server.post("/tweets", (req, res) => {
-	const tweet = req.body;
-	let user;
-	if (validTweet(tweet)){
-		user = userLogged(tweet);
-	}
-	if (user !== undefined) {
-		tweets.push(
-			{
-				username: user.username,
-				avatar: user.avatar,
-				tweet: tweet.tweet
-			}
-		);
-		res.sendStatus(201);
+	const tweet = {
+		username: "",
+		tweet: ""
+	};
+	if (typeof req.headers.user === "string") {
+		tweet.username = req.headers.user;
+		tweet.tweet = req.body.tweet;
 	} else {
-		res.status(400).send("UNAUTHORIZED");
+		tweet.username = req.body.username;
+		tweet.tweet = req.body.tweet;
+	}
+	let user;
+	if (validTweet(tweet)) {
+		user = userLogged(tweet);
+		if (user !== undefined) {
+			tweets.push(
+				{
+					username: user.username,
+					avatar: user.avatar,
+					tweet: tweet.tweet
+				}
+			);
+			res.sendStatus(201);
+		} else {
+			res.status(401).send("UNAUTHORIZED");
+		}
+	} else {
+		res.sendStatus(400);
 	}
 })
 
-function validTweet(tweet){
+function validTweet(tweet) {
 	let ok = false;
-	if (typeof tweet.username === "string" && typeof tweet.tweet === "string"){
-		if (tweet.username.length > 0 && tweet.tweet.length > 0){
+	if (typeof tweet.username === "string" && typeof tweet.tweet === "string") {
+		if (tweet.username.length > 0 && tweet.tweet.length > 0) {
 			ok = true;
 		}
 	}
