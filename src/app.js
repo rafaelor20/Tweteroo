@@ -12,7 +12,7 @@ server.post("/sign-up", (req, res) => {
 	const user = req.body;
 	if (validSignUp(user)) {
 		users.push(user);
-		res.sendStatus(200);
+		res.sendStatus(201);
 	} else {
 		res.sendStatus(400);
 	}
@@ -20,7 +20,6 @@ server.post("/sign-up", (req, res) => {
 
 function validSignUp(user) {
 	let ok = false;
-	console.log(typeof user.username);
 	if (typeof user.username === "string" && typeof user.avatar === "string"){
 		if (user.username.length > 0 && user.avatar.length > 0){
 			ok = true;
@@ -35,7 +34,7 @@ server.post("/tweets", (req, res) => {
 	if (validTweet(tweet)){
 		user = userLogged(tweet);
 	}
-	if (user !== null) {
+	if (user !== undefined) {
 		tweets.push(
 			{
 				username: user.username,
