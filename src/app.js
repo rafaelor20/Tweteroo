@@ -14,14 +14,15 @@ server.post("/sign-up", (req, res) => {
 		users.push(user);
 		res.send("OK");
 	} else {
-		res.send(400);
+		res.sendStatus(400);
 	}
 })
 
 function validSignUp(user) {
 	let ok = false;
-	if ((typeof user.username) === "string" && (typeof user.avatar) !== "string"){
-		if(user.username.length>10 && user.avatar.length>10){
+	console.log(typeof user.username);
+	if (typeof user.username === "string" && typeof user.avatar === "string"){
+		if (user.username.length > 0 && user.avatar.length > 0){
 			ok = true;
 		}
 	}
