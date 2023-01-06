@@ -44,7 +44,7 @@ server.post("/tweets", (req, res) => {
 		);
 		res.sendStatus(201);
 	} else {
-		res.sendStatus(400);
+		res.status(400).send("UNAUTHORIZED");
 	}
 })
 
