@@ -43,9 +43,9 @@ server.post("/tweets", (req, res) => {
 				tweet: tweet.tweet
 			}
 		);
-		res.sendStatus(200);
+		res.sendStatus(201);
 	} else {
-		res.sendStatus(401);
+		res.sendStatus(400);
 	}
 })
 
