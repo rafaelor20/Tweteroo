@@ -14,7 +14,7 @@ server.post("/sign-up", (req, res) => {
 		users.push(user);
 		res.send("OK");
 	} else {
-		res.send("Invalid user!");
+		res.send(400);
 	}
 })
 
@@ -50,7 +50,12 @@ function userLogged(tweet) {
 }
 
 server.get("/tweets", (req, res) => {
-	res.send(tweets);
+	if (tweets.length > 10) {
+		const lastTweets = tweets.slice(-10);
+		res.send(lastTweets);
+	} else {
+		res.send(tweets);
+	}
 })
 
 server.listen(PORT, () => console.log(`Este servidor roda na porta: ${PORT}`));
