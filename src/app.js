@@ -19,7 +19,13 @@ server.post("/sign-up", (req, res) => {
 })
 
 function validSignUp(user) {
-	return !!(user.username && user.avatar);
+	let ok = true;
+	if (typeof user.username !== "string"){
+		ok = false;
+	}
+	if (typeof user.avatar !== "string"){
+		ok = false;
+	return ok;
 }
 
 server.post("/tweets", (req, res) => {
