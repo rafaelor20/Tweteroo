@@ -2,30 +2,69 @@ import express from "express"
 
 const PORT = 5000;
 
-let tweet = {
-    "username": "",
-    "tweet": ""
-}
-
-let tweetsElem = {
-	"username": "",
-	"avatar": "",
-	"tweet": ""
-};
-
 const users = [];
 const tweets = [];
 
 const server = express();
 server.use(express.json());
 
-server.post("/sign-up",(req, res) => {
+server.post("/sign-up", (req, res) => {
 	const user = req.body;
-	users.push(user);
-	console.log(users);
-	res.send();
+	if (validSignUp(user)) {
+		users.push(user);
+		res.send("OK");
+	} else {
+		res.send("Invalid user!");
+	}
 })
 
+function validSignUp(user) {
+	return !!(user.username && user.avatar);
+}
 
+server.post("/tweets", (req, res) => {
+	const tweet = req.body;
+	const user = userLogged(tweet)
+	if (user !== null) {
+		tweets.push(
+			{
+				username: user.username,
+				avatar: user.avatar,
+				tweet: tweet.tweet
+			}
+		);
+		res.send("OK");
+	} else {
+		res.send("UNAUTHORIZED");
+	}
+})
+
+function userLogged(tweet) {
+	const username = tweet.username;
+	for (const element of users) {
+		if (element.username === username) {
+			return element;
+		}
+	}
+	return null;
+}
+
+server.get("/tweets", (req, res) => {
+	res.send(tweets);
+})
 
 server.listen(PORT, () => console.log(`Este servidor roda na porta: ${PORT}`));
+
+/*
+thunder client:
+{
+	"username": "rafael",
+	"avatar": "https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg"
+}
+
+{
+  "username": "rafael",
+  "tweet": "eu amo o hub"
+}
+
+*/
