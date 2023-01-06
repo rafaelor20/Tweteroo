@@ -19,12 +19,11 @@ server.post("/sign-up", (req, res) => {
 })
 
 function validSignUp(user) {
-	let ok = true;
-	if ((typeof user.username) !== "string"){
-		ok = false;
-	}
-	if ((typeof user.avatar) !== "string"){
-		ok = false;
+	let ok = false;
+	if ((typeof user.username) === "string" && (typeof user.avatar) !== "string"){
+		if(user.username.length>10 && user.avatar.length>10){
+			ok = true;
+		}
 	}
 	return ok;
 }
