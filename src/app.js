@@ -20,11 +20,12 @@ server.post("/sign-up", (req, res) => {
 
 function validSignUp(user) {
 	let ok = true;
-	if (typeof user.username !== "string"){
+	if ((typeof user.username) !== "string"){
 		ok = false;
 	}
-	if (typeof user.avatar !== "string"){
+	if ((typeof user.avatar) !== "string"){
 		ok = false;
+	}
 	return ok;
 }
 
