@@ -43,7 +43,8 @@ server.post("/tweets", (req, res) => {
 	let user;
 	if (validTweet(tweet)) {
 		user = userLogged(tweet);
-		if (user !== undefined) {
+		console.log(user);
+		if (user !== null) {
 			tweets.push(
 				{
 					username: user.username,
